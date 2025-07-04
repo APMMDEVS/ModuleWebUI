@@ -56,6 +56,11 @@ jobs:
           echo "Build completed successfully"
           ls -la dist/
           du -sh dist/
+      - name: Upload build artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: build-artifact
+          path: dist/
 
   # 代码质量检查
   quality:
@@ -85,8 +90,3 @@ jobs:
           npx vite --version
           node -e "console.log('Vite config validation passed')"
           
-      - name: Upload build artifacts
-        uses: actions/upload-artifact@v4
-        with:
-          name: build-artifact-
-          path: dist/
