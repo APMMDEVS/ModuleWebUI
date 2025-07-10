@@ -55,15 +55,6 @@ body.mmrl-webui-x {
     padding-top: env(safe-area-inset-top);
 }
 
-/* MMRL WebUI X 莫奈取色回退 */
-body.md3-monet {
-    /* 这里可以放置 MD3 默认的莫奈颜色变量，如果需要 */
-    /* 例如： */
-    /* --md-sys-color-primary: #6750A4; */
-    /* --md-sys-color-on-primary: #FFFFFF; */
-    /* ... */
-}
-
 .app-loaded #app {
     opacity: 1;
 }
