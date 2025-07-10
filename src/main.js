@@ -206,9 +206,34 @@ const init = async () => {
     }
 };
 
-document.addEventListener('DOMContentLoaded', () => {
-    LoadingManager.mark('dom');
+document.addEventListener('DOMContentLoaded', async () => {
+    LoadingManager.domReady();
+    // 确保在 DOMContentLoaded 后添加 app-loaded 类，以便 CSS 动画可以正确触发
     document.body.classList.add('app-loaded');
+
+    // MMRL WebUI X 莫奈取色和顶栏防遮挡
+    if (typeof mmrl !== 'undefined') {
+        // 顶栏防遮挡
+        document.body.classList.add('mmrl-webui-x');
+
+        // 莫奈取色
+        const { Core } = await import('./core.js');
+        if (Core && typeof Core.getMonetColors === 'function') {
+            const colors = await Core.getMonetColors();
+            if (Object.keys(colors).length > 0) {
+                // 应用莫奈颜色
+                for (const key in colors) {
+                    document.documentElement.style.setProperty(`--${key}`, colors[key]);
+                }
+            } else {
+                // 如果不支持或获取失败，回退到 MD3 CSS 莫奈取色
+                document.body.classList.add('md3-monet');
+            }
+        } else {
+            // 如果 Core.getMonetColors 不存在，也回退到 MD3 CSS 莫奈取色
+            document.body.classList.add('md3-monet');
+        }
+    }
 });
 
 init();
