@@ -43,13 +43,9 @@ class I18n {
     }
 
     try {
-      // 加载主翻译文件
-      const response = await fetch(`./src/i18n/${lang}.json`);
-      if (!response.ok) {
-        throw new Error(`Failed to load ${lang}.json`);
-      }
-
-      const translations = await response.json();
+      // 使用Vite的动态导入加载主翻译文件
+      const translationModule = await import(`../i18n/${lang}.json`);
+      const translations = translationModule.default;
 
       // 加载扩展翻译文件
       const moduleTranslations = await this.loadModuleTranslations(lang);
@@ -79,18 +75,15 @@ class I18n {
     const moduleTranslations = {};
 
     try {
-      // 尝试加载modules目录下的翻译文件
-      const moduleResponse = await fetch(`./src/i18n/modules/${lang}.json`);
-      if (moduleResponse.ok) {
-        const moduleData = await moduleResponse.json();
-        Object.assign(moduleTranslations, moduleData);
+      // 使用Vite的动态导入加载modules目录下的翻译文件
+      const moduleData = await import(`../i18n/modules/${lang}.json`);
+      Object.assign(moduleTranslations, moduleData.default);
 
-        if (window.core && window.core.isDebugMode()) {
-          window.core.logDebug(
-            `Loaded module translations for ${lang}`,
-            "I18N"
-          );
-        }
+      if (window.core && window.core.isDebugMode()) {
+        window.core.logDebug(
+          `Loaded module translations for ${lang}`,
+          "I18N"
+        );
       }
     } catch (error) {
       // 模块翻译文件不存在时不报错，这是正常情况

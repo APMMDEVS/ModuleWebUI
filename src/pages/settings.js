@@ -52,12 +52,8 @@ class SettingsPage {
 
   async loadSettings() {
     try {
-      // 加载设置配置
-      const response = await fetch("./settings.json");
-      if (!response.ok) {
-        throw new Error(`HTTP ${response.status}: ${response.statusText}`);
-      }
-      this.settingsConfig = await response.json();
+      // 通过cat命令读取settings.json配置文件
+      await this.loadSettingsConfig();
 
       // 加载当前设置值
       await this.loadCurrentSettings();
@@ -68,6 +64,41 @@ class SettingsPage {
       window.core.showError("加载设置失败", error.message);
       this.renderErrorState();
     }
+  }
+
+  async loadSettingsConfig() {
+    return new Promise((resolve, reject) => {
+      if (!window.core.isKSUEnvironment()) {
+        // 浏览器环境使用动态导入作为fallback
+        import("../../settings.json")
+          .then(module => {
+            this.settingsConfig = module.default;
+            resolve();
+          })
+          .catch(reject);
+        return;
+      }
+
+      // KSU环境使用cat命令读取配置文件
+      const settingsPath = `${window.core.MODULE_PATH}/settings.json`;
+      window.core.execCommand(`cat "${settingsPath}"`, (output, success) => {
+        if (success && output.trim()) {
+          try {
+            this.settingsConfig = JSON.parse(output.trim());
+            if (window.core.isDebugMode()) {
+              window.core.logDebug('Settings config loaded via cat', 'SETTINGS');
+            }
+            resolve();
+          } catch (parseError) {
+            window.core.logDebug(`Failed to parse settings.json: ${parseError.message}`, 'SETTINGS');
+            reject(new Error(`配置文件格式错误: ${parseError.message}`));
+          }
+        } else {
+          window.core.logDebug('Failed to read settings.json via cat', 'SETTINGS');
+          reject(new Error('无法读取配置文件'));
+        }
+      });
+    });
   }
 
   async loadCurrentSettings() {

@@ -321,7 +321,7 @@ class App {
 
       if (pageInstance) {
         // 加载页面CSS
-        const cssPath = `./src/assets/css/pages/${page}.css`;
+        const cssPath = `./assets/css/pages/${page}.css`;
         try {
           await this.loadCSS(cssPath);
         } catch (error) {
