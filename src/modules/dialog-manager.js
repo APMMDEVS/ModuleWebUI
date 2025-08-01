@@ -84,6 +84,9 @@ class DialogManager {
       `
             <div class="dialog-header">
                 <h2 id="generic-title">标题</h2>
+                <button id="generic-close" class="dialog-close-btn" style="display: flex;">
+                    <span class="material-symbols-rounded">close</span>
+                </button>
             </div>
             <div class="dialog-content" id="generic-content">
                 <!-- 动态内容 -->
@@ -252,42 +255,55 @@ class DialogManager {
       } = options;
 
       // 设置标题和内容
-      document.getElementById("generic-title").textContent = title;
+      const titleEl = document.getElementById("generic-title");
+      if (titleEl) {
+        titleEl.textContent = title;
+      }
+      
       const contentEl = document.getElementById("generic-content");
-      contentEl.innerHTML = content;
-
-      // 根据内容复杂度设置样式类
-      contentEl.className = `dialog-content ${
-        isComplex ? "complex" : "simple"
-      }`;
+      if (contentEl) {
+        contentEl.innerHTML = content;
+        // 根据内容复杂度设置样式类
+        contentEl.className = `dialog-content ${
+          isComplex ? "complex" : "simple"
+        }`;
+      }
 
       // 设置关闭按钮
       const closeBtn = document.getElementById("generic-close");
-      if (closable) {
-        closeBtn.style.display = "flex";
-        closeBtn.onclick = () => {
-          this.closeDialogWithAnimation(this.genericDialog);
-          resolve(null);
-        };
-      } else {
-        closeBtn.style.display = "none";
+      if (closeBtn) {
+        if (closable) {
+          closeBtn.style.display = "flex";
+          closeBtn.onclick = () => {
+            this.closeDialogWithAnimation(this.genericDialog);
+            resolve(null);
+          };
+        } else {
+          closeBtn.style.display = "none";
+        }
+      } else if (window.core && window.core.isDebugMode()) {
+        window.core.logDebug('Generic close button not found', 'DIALOG');
       }
 
       // 生成按钮
       const actionsContainer = document.getElementById("generic-actions");
-      actionsContainer.innerHTML = "";
+      if (actionsContainer) {
+        actionsContainer.innerHTML = "";
 
-      buttons.forEach((btn, index) => {
-        const button = document.createElement("button");
-        button.textContent = btn.text;
-        if (btn.style) button.className = btn.style;
-        button.onclick = () => {
-          this.closeDialogWithAnimation(this.genericDialog);
-          if (btn.action) btn.action();
-          resolve(index);
-        };
-        actionsContainer.appendChild(button);
-      });
+        buttons.forEach((btn, index) => {
+          const button = document.createElement("button");
+          button.textContent = btn.text;
+          if (btn.style) button.className = btn.style;
+          button.onclick = () => {
+            this.closeDialogWithAnimation(this.genericDialog);
+            if (btn.action) btn.action();
+            resolve(index);
+          };
+          actionsContainer.appendChild(button);
+        });
+      } else if (window.core && window.core.isDebugMode()) {
+        window.core.logDebug('Generic actions container not found', 'DIALOG');
+      }
 
       this.showDialogWithAnimation(this.genericDialog);
     });
