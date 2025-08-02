@@ -110,6 +110,9 @@
     "operationFailed": "Operation Failed",
     "fileNotFound": "File Not Found",
     "networkError": "Network Error",
-    "unexpectedError": "Unexpected Error"
+    "unexpectedError": "Unexpected Error",
+    "ksuNotDefined": "KSU Environment Not Defined",
+    "permissionDenied": "Permission Denied",
+    "execFailed": "Execution Failed"
   }
 }

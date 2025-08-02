@@ -665,7 +665,6 @@ body.mmrl-webui-x {
 
 /* 页面加载状态 */
 .page-loading {
-  opacity: 0;
   transform: translateY(12px);
 }
 

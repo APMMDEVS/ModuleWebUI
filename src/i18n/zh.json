@@ -118,6 +118,9 @@
     "operationFailed": "操作失败",
     "fileNotFound": "文件未找到",
     "networkError": "网络错误",
-    "unexpectedError": "意外错误"
+    "unexpectedError": "意外错误",
+    "ksuNotDefined": "KSU环境未定义",
+    "permissionDenied": "权限被拒绝",
+    "execFailed": "执行失败"
   }
 }

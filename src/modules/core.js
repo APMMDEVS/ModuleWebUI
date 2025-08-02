@@ -167,13 +167,13 @@ export const Core = {
 
     // 检查常见错误并提供本地化消息
     if (error.includes("ksu.exec is not defined")) {
-      errorMessage = this.t("errors.ksuNotDefined");
+      errorMessage = window.i18n ? window.i18n.t("errors.ksuNotDefined") : "KSU not defined";
     } else if (error.includes("not found")) {
-      errorMessage = this.t("errors.fileNotFound");
+      errorMessage = window.i18n ? window.i18n.t("errors.fileNotFound") : "File not found";
     } else if (error.includes("permission denied")) {
-      errorMessage = this.t("errors.permissionDenied");
+      errorMessage = window.i18n ? window.i18n.t("errors.permissionDenied") : "Permission denied";
     } else if (error.includes("failed")) {
-      errorMessage = this.t("errors.execFailed");
+      errorMessage = window.i18n ? window.i18n.t("errors.execFailed") : "Execution failed";
     }
 
     if (context) {

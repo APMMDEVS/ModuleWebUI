@@ -44,7 +44,7 @@ class I18n {
 
     try {
       // 使用Vite的动态导入加载主翻译文件
-      const translationModule = await import(`../i18n/${lang}.json`);
+      const translationModule = await import(/* @vite-ignore */ `../i18n/${lang}.json`);
       const translations = translationModule.default;
 
       // 加载扩展翻译文件
@@ -76,7 +76,7 @@ class I18n {
 
     try {
       // 使用Vite的动态导入加载modules目录下的翻译文件
-      const moduleData = await import(`../i18n/modules/${lang}.json`);
+      const moduleData = await import(/* @vite-ignore */ `../i18n/modules/${lang}.json`);
       Object.assign(moduleTranslations, moduleData.default);
 
       if (window.core && window.core.isDebugMode()) {

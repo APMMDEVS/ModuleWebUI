@@ -105,7 +105,7 @@ class PluginManager {
       
       if (config.type === 'class') {
         // 动态导入插件类
-        const pluginModule = await import(`../plugins/${config.id}/${config.entry || 'index.js'}`);
+        const pluginModule = await import(/* @vite-ignore */ `../plugins/${config.id}/${config.entry || 'index.js'}`);
         const PluginClass = pluginModule.default || pluginModule[config.className || config.id];
         
         if (!PluginClass) {
@@ -115,7 +115,7 @@ class PluginManager {
         pluginInstance = new PluginClass();
       } else if (config.type === 'function') {
         // 函数式插件
-        const pluginModule = await import(`../plugins/${config.id}/${config.entry || 'index.js'}`);
+        const pluginModule = await import(/* @vite-ignore */ `../plugins/${config.id}/${config.entry || 'index.js'}`);
         const pluginFunction = pluginModule.default || pluginModule[config.functionName || 'init'];
         
         if (typeof pluginFunction !== 'function') {
@@ -179,7 +179,7 @@ class PluginManager {
 
     try {
       // 动态导入插件
-      const pluginModule = await import(`../plugins/${pluginId}/index.js`);
+      const pluginModule = await import(/* @vite-ignore */ `../plugins/${pluginId}/index.js`);
       const PluginClass = pluginModule.default || pluginModule[pluginId];
       
       if (!PluginClass) {

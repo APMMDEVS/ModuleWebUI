@@ -110,6 +110,9 @@
     "operationFailed": "Операция не удалась",
     "fileNotFound": "Файл не найден",
     "networkError": "Ошибка сети",
-    "unexpectedError": "Неожиданная ошибка"
+    "unexpectedError": "Неожиданная ошибка",
+    "ksuNotDefined": "Среда KSU не определена",
+    "permissionDenied": "Доступ запрещен",
+    "execFailed": "Выполнение не удалось"
   }
 }

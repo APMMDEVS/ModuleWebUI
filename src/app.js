@@ -423,7 +423,7 @@ class App {
       }
 
       const moduleName = pageConfig.module || page;
-      const module = await import(`./pages/${moduleName}.js`);
+      const module = await import(/* @vite-ignore */ `./pages/${moduleName}.js`);
       const PageClass = module[this.getPageClassName(page)];
       return PageClass ? new PageClass() : null;
     } catch (error) {
@@ -616,7 +616,7 @@ class App {
           <span class="material-symbols-rounded">widgets</span>
         </div>
         <div class="about-text">
-          <h3>ModuleWebUI</h3>
+          <h3>Module WebUI</h3>
           <p class="version">v2.0.0</p>
           <p class="description">${window.i18n.t('about.description')}</p>
           <div class="about-links">
